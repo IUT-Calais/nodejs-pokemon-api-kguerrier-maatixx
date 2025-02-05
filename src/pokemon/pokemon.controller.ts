@@ -3,14 +3,14 @@ import prisma from "../client";
 import { Request, Response } from "express";
 
 /**
- * Récupérer un pokemon par son id
+ * Get a pokemon by id
  * @param _req
  * @param res
  */
 export const getPokemonCardById = async (_req: express.Request, res: express.Response) => {
     const PokemonCard = await prisma.pokemonCard.findFirst({
         where: {
-            id : parseInt(_req.params.pokemonCardId)
+            pokedexId : parseInt(_req.params.pokemonCardId)
         }
     });
     if (!PokemonCard) {
@@ -22,7 +22,7 @@ export const getPokemonCardById = async (_req: express.Request, res: express.Res
 }
 
 /**
- * Récupérer tous les pokemons
+ * Get all pokemons
  * @param _req
  * @param res
  */
@@ -38,7 +38,7 @@ export const getPokemonCard = async (_req: express.Request, res: express.Respons
 }
 
 /**
- * Créer un pokemon
+ * Create a pokemon
  * @param req
  * @param res
  */
@@ -78,14 +78,14 @@ export const createPokemonCard = async (_req: Request, res: Response) => {
 };
 
 /**
- * Modifier un pokemon
+ * Edit a pokemon
  * @param _req
  * @param res
  */
 export const editPokemonCard = async (_req: Request, res: Response) => {
     // Check if the pokemon exists
     const existingPokemonCard = await prisma.pokemonCard.findFirst({
-        where: { id: parseInt(_req.params.pokemonCardId) },
+        where: { pokedexId: parseInt(_req.params.pokemonCardId) },
     });
     if (!existingPokemonCard) {
         res.status(404).send("Pokemon not found.");
@@ -112,7 +112,7 @@ export const editPokemonCard = async (_req: Request, res: Response) => {
     const duplicatePokemon = await prisma.pokemonCard.findFirst({
         where: {
             OR: [{ name }, { pokedexId }],
-            NOT: { id: parseInt(_req.params.pokemonCardId) }
+            NOT: { pokedexId: parseInt(_req.params.pokemonCardId) }
         }
     });
     if (duplicatePokemon) {
@@ -122,7 +122,7 @@ export const editPokemonCard = async (_req: Request, res: Response) => {
 
     // Update the pokemon
     const updatedPokemonCard = await prisma.pokemonCard.update({
-        where: { id: parseInt(_req.params.pokemonCardId) },
+        where: { pokedexId: parseInt(_req.params.pokemonCardId) },
         data: { name, typeId, pokedexId, lifePoints, size, weight, imageUrl },
     });
     res.status(200).json(updatedPokemonCard);
@@ -136,7 +136,7 @@ export const editPokemonCard = async (_req: Request, res: Response) => {
 export const deletePokemonCard = async (_req: Request, res: Response) => {
     // Check if the pokemon exists
     const existingPokemonCard = await prisma.pokemonCard.findFirst({
-        where: { id: parseInt(_req.params.pokemonCardId) },
+        where: { pokedexId: parseInt(_req.params.pokemonCardId) },
     });
     if (!existingPokemonCard) {
         res.status(404).send("Pokemon not found.");
@@ -145,7 +145,7 @@ export const deletePokemonCard = async (_req: Request, res: Response) => {
 
     // Delete the pokemon
     const deletedPokemonCard = await prisma.pokemonCard.delete({
-        where: { id: parseInt(_req.params.pokemonCardId) },
+        where: { pokedexId: parseInt(_req.params.pokemonCardId) },
     });
     res.status(200).json(deletedPokemonCard);
 }

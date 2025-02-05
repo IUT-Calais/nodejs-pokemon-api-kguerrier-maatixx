@@ -1,22 +1,23 @@
 import { Router } from 'express';
 import {createPokemonCard, deletePokemonCard, editPokemonCard, getPokemonCardById} from "./pokemon.controller";
 import {getPokemonCard} from "./pokemon.controller";
+import {verifyJWT} from "../common/jwt.middleware";
 
 const router = Router();
 
-// Route pour récupérer tous les pokémons
+// Route to get all pokemons
 router.get('/pokemon-cards', getPokemonCard);
 
-// Route pour récupérer un pokémon avec un ID
+// Route to get a pokemon by id
 router.get('/pokemon-cards/:pokemonCardId', getPokemonCardById);
 
-// Route pour créer un pokémon
-router.post('/pokemon-cards', createPokemonCard);
+// Route to create a pokemon
+router.post('/pokemon-cards', verifyJWT, createPokemonCard);
 
-// Route pour modifier un pokémon
-router.patch('/pokemon-cards/:pokemonCardId', editPokemonCard);
+// Route to edit a pokemon
+router.patch('/pokemon-cards/:pokemonCardId', verifyJWT, editPokemonCard);
 
-// Route pour supprimer un pokémon
-router.delete('/pokemon-cards/:pokemonCardId', deletePokemonCard);
+// Route to delete a pokemon
+router.delete('/pokemon-cards/:pokemonCardId', verifyJWT, deletePokemonCard);
 
 export default router;
