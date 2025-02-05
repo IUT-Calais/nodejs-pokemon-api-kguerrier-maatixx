@@ -3,3 +3,6 @@ dist
 build
 coverage
 **/*.db
+.DS_Store
+.idea/*
+.prisma/migrations/*
