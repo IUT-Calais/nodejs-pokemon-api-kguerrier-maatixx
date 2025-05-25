@@ -1,0 +1,218 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Pokemon API",
+      "description": "API pour gérer les cartes Pokémon et les utilisateurs."
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "schemes": ["http"],
+    "paths": {
+      "/pokemon-cards": {
+        "get": {
+          "summary": "Obtenir toutes les cartes Pokémon",
+          "description": "Récupère la liste de toutes les cartes Pokémon.",
+          "responses": {
+            "200": {
+              "description": "Liste des cartes Pokémon",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/PokemonCard"
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Créer une carte Pokémon",
+          "description": "Ajoute une nouvelle carte Pokémon.",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/PokemonCard"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Carte Pokémon créée"
+            },
+            "400": {
+              "description": "Données invalides"
+            }
+          }
+        }
+      },
+      "/pokemon-cards/{pokemonCardId}": {
+        "get": {
+          "summary": "Obtenir une carte Pokémon par ID",
+          "description": "Récupère les informations d'une carte Pokémon spécifique.",
+          "parameters": [
+            {
+              "name": "pokemonCardId",
+              "in": "path",
+              "required": true,
+              "type": "integer",
+              "description": "ID de la carte Pokémon"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Détails de la carte Pokémon",
+              "schema": {
+                "$ref": "#/definitions/PokemonCard"
+              }
+            },
+            "404": {
+              "description": "Carte Pokémon non trouvée"
+            }
+          }
+        },
+        "patch": {
+          "summary": "Modifier une carte Pokémon",
+          "description": "Met à jour les informations d'une carte Pokémon existante.",
+          "parameters": [
+            {
+              "name": "pokemonCardId",
+              "in": "path",
+              "required": true,
+              "type": "integer",
+              "description": "ID de la carte Pokémon"
+            },
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/PokemonCard"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Carte Pokémon mise à jour"
+            },
+            "404": {
+              "description": "Carte Pokémon non trouvée"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Supprimer une carte Pokémon",
+          "description": "Supprime une carte Pokémon existante.",
+          "parameters": [
+            {
+              "name": "pokemonCardId",
+              "in": "path",
+              "required": true,
+              "type": "integer",
+              "description": "ID de la carte Pokémon"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Carte Pokémon supprimée"
+            },
+            "404": {
+              "description": "Carte Pokémon non trouvée"
+            }
+          }
+        }
+      },
+      "/users": {
+        "post": {
+          "summary": "Créer un utilisateur",
+          "description": "Ajoute un nouvel utilisateur.",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Utilisateur créé"
+            },
+            "400": {
+              "description": "Données invalides"
+            }
+          }
+        }
+      },
+      "/users/login": {
+        "post": {
+          "summary": "Connecter un utilisateur",
+          "description": "Connecte un utilisateur existant et retourne un token JWT.",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/UserLogin"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Utilisateur connecté",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Données invalides"
+            },
+            "404": {
+              "description": "Utilisateur non trouvé"
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "PokemonCard": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "typeId": { "type": "integer" },
+          "pokedexId": { "type": "integer" },
+          "lifePoints": { "type": "integer" },
+          "size": { "type": "number" },
+          "weight": { "type": "number" },
+          "imageUrl": { "type": "string" }
+        },
+        "required": ["name", "typeId", "pokedexId", "lifePoints"]
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "password": { "type": "string" }
+        },
+        "required": ["email", "password"]
+      },
+      "UserLogin": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "password": { "type": "string" }
+        },
+        "required": ["email", "password"]
+      }
+    }
+  }
